@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portafolio</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <!-- Controles de tema -->
+<div class="controls">
+  <button id="themeBtn" aria-pressed="false" aria-label="Cambiar tema">
+    <!-- SOL -->
+    <span class="icon sun" aria-hidden="true">
+      <svg viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="12"/>
+        <g stroke="currentColor" stroke-width="4" stroke-linecap="round">
+          <line x1="32" y1="4" x2="32" y2="14"/>
+          <line x1="32" y1="50" x2="32" y2="60"/>
+          <line x1="4" y1="32" x2="14" y2="32"/>
+          <line x1="50" y1="32" x2="60" y2="32"/>
+          <line x1="12" y1="12" x2="20" y2="20"/>
+          <line x1="44" y1="44" x2="52" y2="52"/>
+          <line x1="44" y1="20" x2="52" y2="12"/>
+          <line x1="12" y1="52" x2="20" y2="44"/>
+        </g>
+      </svg>
+    </span>
+
+    <!-- LUNA -->
+    <span class="icon moon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>
+      </svg>
+    </span>
+
+    <span class="label">Modo oscuro</span>
+  </button>
+</div>
+  <div class="container">
+
+    <!-- Imagen superior -->
+    <div class="hero-image">
+      <img src="img/perfil instagram.png" alt="Imagen principal">
+    </div>
+
+    <!-- Header -->
+    <header>
+      <h1>Portafolio de Luciano</h1>
+      <p>Proyectos web y prácticas personales</p>
+    </header>
+
+    <!-- Secciones informativas (Sobre mí / Habilidades / Contacto) -->
+    <section class="intro-sections">
+      <div class="intro-grid">
+        <article class="intro-card">
+          <h3>Sobre mí</h3>
+          <p>Hola, soy Luciano, estudiante y desarrollador web enfocado en crear interfaces estéticas y funcionales. Me destaco por haber formado parte de los mejores promedios de mi institución el último año.</p>
+        </article>
+
+        <article class="intro-card">
+          <h3>Habilidades</h3>
+          <p>HTML, CSS, JavaScript y Python. Me centro en el diseño responsivo y estético, buscando mantener al máximo la visión del cliente.</p>
+        </article>
+
+        <article class="intro-card">
+          <h3>Experiencia previa</h3>
+          <p>Soy estudiante de la carrera de Técnico Programador, con tres años de formación en desarrollo de software.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Proyectos -->
+    <section class="projects">
+
+      <div class="project-card">
+        <div class="project-image" style="background:linear-gradient(135deg,#6d28d9,#10b981);">
+          <img src="img/diario-icon.svg" alt="📘" style="width:64px;height:64px;filter:invert(1)">
+        </div>
+        <div class="project-content">
+          <h3>Diario Digital</h3>
+          <p>Aplicación para registrar notas con modo oscuro y guardado local.</p>
+          <a class="project-link" href="./diario/pagina_de_practica.html" target="_blank">Ver Proyecto</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-image" style="background:linear-gradient(135deg,#6d28d9,#10b981);">
+          <img src="img/free-youtube-icon-123-thumb.png" alt="Diseño" style="width:64px;height:64px;filter:invert(1)">
+        </div>
+        <div class="project-content">
+          <h3>Web de redes</h3>
+          <p>una pagina para contener redes sociales con diseño resposivo e interconectado con mi biblioteca como ejemplo de navegacion web</p>
+          <a class="project-link" href="https://luciano883.github.io/Luciano-website/index.html" target="_blank">Ver Proyecto</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-image" style="background:linear-gradient(135deg,#6d28d9,#10b981);">
+          <img src="img/225993.png" alt="Rocket" style="width:64px;height:64px;filter:invert(1)">
+        </div>
+        <div class="project-content">
+          <h3>Biblioteca</h3>
+          <p>una pagian que almasena libros pdf de forma simple que muestra como integrar verios tipos de archivos dentro de la pagina.</p>
+          <a class="project-link" href="https://luciano883.github.io/Luciano-website/Escritos-de-Lucy.html" target="_blank">Ver Proyecto</a>
+        </div>
+      </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <span class="footer-text">
+      © 2025 · Luciano
+    </span>
+
+    <div class="footer-buttons">
+      <a href="https://github.com/tuusuario"
+         target="_blank"
+         class="icon-btn github"
+         aria-label="GitHub">
+        <img src="img/Github icon.png" alt="GitHub">
+      </a>
+
+      <a href="CV/CV.pdf"
+         class="icon-btn cv"
+         aria-label="Currículum"
+         target="_blank">
+        <img src="img/CV Icon.png" alt="CV">
+      </a>
+    </div>
+
+  </div>
+</footer>
+  <!-- JS -->
+  <script src="js/theme.js"></script>
+</body>
+</html>

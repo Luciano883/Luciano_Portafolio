@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>pagina de practica</title>
+  <style>
+:root{
+  --bg:#f6f7f9;
+  --panel:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --accent:#2563eb;
+  --radius:10px;
+  --max-w:900px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Georgia, 'Times New Roman', Times, serif}
+body{
+  /* No-op placeholder for upcoming edits */
+  /* No-op placeholder for upcoming edits */
+  /* No-op placeholder for upcoming edits */
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  padding:24px;
+}
+
+.container{max-width:var(--max-w);width:100%}
+
+/* Layout */
+header{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-bottom:18px;position:relative}
+header h1{margin:0;font-size:1.4rem}
+header{
+  display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-bottom:18px;position:relative}
+header h1{margin:0;font-size:1.4rem}
+
+/* Controls inside header positioned to the right */
+.controls{
+  position:fixed; /* fixed to viewport corner */
+  left:8px;      /* top-left corner */
+  top:8px;
+  transform:none;
+  z-index:9999;
+}
+.controls button{
+  padding:8px 10px;
+  border-radius:10px;
+  border:0;
+  background:var(--panel);
+  cursor:pointer;
+  box-shadow:0 8px 26px rgba(2,6,23,0.12);
+  color:var(--text);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  font-size:0.95rem;
+  transition:transform .12s ease, box-shadow .12s ease, background .12s;
+}
+.controls button:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(2,6,23,0.18)}
+.controls button svg{width:18px;height:18px;flex:0 0 18px;display:block;fill:currentColor}
+.controls button[aria-pressed="true"]{background:var(--accent);color:#fff}
+
+main{width:100%;max-width:var(--max-w)}
+.entry-form{background:var(--panel);padding:14px;border-radius:var(--radius);box-shadow:0 6px 20px rgba(2,6,23,0.06);margin-bottom:14px}
+.entry-form input[type="date"], .entry-form textarea{
+  width:100%;padding:10px;border-radius:8px;border:1px solid rgba(15,23,42,0.06);margin-bottom:8px;font-size:0.95rem;background:transparent;color:inherit;
+}
+
+/* Style date input to look like the action buttons (compact) */
+.entry-form input[type="date"]{
+  max-width:220px;
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:8px;
+  border:0;
+  background:var(--panel);
+  box-shadow:0 4px 12px rgba(2,6,23,0.04);
+  color:var(--text);
+  cursor:pointer;
+}
+/* Remove native appearance (may vary by browser) */
+.entry-form input[type="date"]::-webkit-inner-spin-button,
+.entry-form input[type="date"]::-webkit-calendar-picker-indicator{
+  cursor:pointer;
+}
+.form-actions{display:flex;gap:8px}
+.form-actions button{padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+.form-actions button#clearForm{background:#ef4444}
+
+/* Estilos para filtros (igual al botón Guardar) */
+.project-filter{
+  padding:8px 12px;
+  border-radius:8px;
+  border:0;
+  background:var(--accent);
+  color:#fff;
+  cursor:pointer;
+  font-size:0.95rem;
+  box-shadow:0 4px 12px rgba(2,6,23,0.04);
+}
+.project-filter option{
+  color:#000;
+}
+.filter-clear{
+  padding:8px 12px;
+  border-radius:8px;
+  border:0;
+  background:var(--accent);
+  color:#fff;
+  cursor:pointer;
+  font-size:0.95rem;
+}
+.filter-clear:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(2,6,23,0.12)}
+
+/* Popup date picker */
+.date-picker-popup{
+  position:absolute;
+  z-index:99999;
+  background:var(--panel);
+  color:var(--text);
+  border-radius:10px;
+  box-shadow:0 12px 36px rgba(2,6,23,0.18);
+  padding:12px;
+  width:260px;
+}
+.date-picker-popup .row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.date-picker-popup .field{flex:1}
+.date-picker-popup .dpLabel{display:block;margin-bottom:6px;font-size:0.9rem;color:var(--muted);font-weight:700}
+.date-picker-popup select{flex:1;padding:8px;border-radius:8px;border:0;background:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(2,6,23,0.04);appearance:none}
+.date-picker-popup select option{color:#000}
+.date-picker-popup .actions{display:flex;gap:8px;justify-content:flex-end}
+.date-picker-popup .actions button{padding:8px 10px;border-radius:8px;border:0;cursor:pointer}
+.date-picker-popup .actions .apply{background:var(--accent);color:#fff}
+.date-picker-popup .actions .cancel{background:#efefef}
+
+/* Entries */
+.entries-list .entry{background:var(--panel);padding:12px;border-radius:8px;margin-bottom:10px;box-shadow:0 4px 12px rgba(2,6,23,0.04)}
+.entry header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.entry .entry-date{font-weight:700}
+.entry .entry-text{white-space:pre-wrap;color:var(--text);margin:0}
+
+/* Botones de acción dentro de cada entrada */
+.entry .entry-actions button{
+  padding:6px 10px;
+  border-radius:6px;
+  border:0;
+  cursor:pointer;
+  font-size:0.9rem;
+  margin-left:6px;
+}
+.entry .entry-actions .edit{
+  background:#10b981; /* verde */
+  color:#fff;
+}
+.entry .entry-actions .delete{
+  background:#ef4444; /* rojo */
+  color:#fff;
+}
+.entry .entry-actions button:hover{
+  filter:brightness(.95);
+  transform:translateY(-2px);
+  transition:transform .12s, filter .12s;
+}
+
+/* Hide the label on very small screens to keep a compact icon-only control */
+@media (max-width:420px){
+  .controls button .label{display:none}
+}
+
+/* small screens */
+@media (max-width:640px){
+  body{padding:12px}
+}
+
+/* Dark mode */
+:root.dark{
+  --bg:#0b1220;
+  --panel:#0f1724;
+  --text:#e6eef8;
+  --muted:#9aa7b8;
+  --accent:#4f46e5;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="controls">
+      <button id="toggleTheme" aria-pressed="false" aria-label="Cambiar tema">
+        <!-- simple sun/moon icon (uses currentColor) -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.45 14.32l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM1 13h3v-2H1v2zm19 0h3v-2h-3v2zM12 6a6 6 0 100 12 6 6 0 000-12zM4.22 19.78l1.41-1.41-1.8-1.79-1.41 1.41 1.8 1.79zM18.36 7.64l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 1h0v3h0V1z"/>
+        </svg>
+        <span class="label">Modo oscuro</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="entry-form">
+      <div class="date-input-wrap" style="display:flex;gap:8px;align-items:center;position:relative">
+        <input type="date" id="entryDate" readonly aria-label="Selecciona la fecha con el calendario" title="Selecciona la fecha con el calendario" />
+        <button id="datePickerToggle" aria-label="Abrir selector de fecha" title="Abrir selector de fecha" style="padding:8px;border-radius:8px;border:0;background:var(--panel);box-shadow:0 4px 12px rgba(2,6,23,0.04);cursor:pointer">📅</button>
+      </div>
+      <textarea id="entryText" rows="6" placeholder="Escribe lo que pasó hoy..."></textarea>
+      <div class="form-actions">
+        <button id="saveEntry">Guardar</button>
+        <button id="clearForm">Eliminar</button>
+      </div>
+    </section>
+
+    <section class="entries-list">
+      <h2>Diario de Luciano</h2>
+      <div class="diary-title" style="margin-top:0;margin-bottom:8px;font-weight:700;color:var(--text)">Entradas</div>
+      <div class="filters" style="margin:10px 0 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <label style="font-size:0.9rem;color:var(--muted);">
+          <select id="filterYear" class="project-filter">
+            <option value="all">Año (Todos)</option>
+          </select>
+        </label>
+        <label style="font-size:0.9rem;color:var(--muted);">
+          <select id="filterMonth" class="project-filter">
+            <option value="all">Mes (Todos)</option>
+          </select>
+        </label>
+        <label style="font-size:0.9rem;color:var(--muted);">
+          <select id="filterDay" class="project-filter">
+            <option value="all">Día (Todos)</option>
+          </select>
+        </label>
+        <button id="clearFilters" class="filter-clear">Limpiar</button>
+      </div>
+      <div id="entries"></div>
+    </section>
+  </main>
+
+  <template id="entryTemplate">
+    <article class="entry">
+      <header>
+        <time class="entry-date"></time>
+        <div class="entry-actions">
+          <button class="edit">Editar</button>
+          <button class="delete">Borrar</button>
+        </div>
+      </header>
+      <p class="entry-text"></p>
+    </article>
+  </template>
+
+  <script>
+// app.js - diario simple con localStorage
+const STORAGE_KEY = 'miDiarioEntradasV1';
+
+const entryDate = document.getElementById('entryDate');
+// Forzar uso del selector de calendario: bloquear entrada por teclado/paste
+if(entryDate){
+  entryDate.setAttribute('readonly','');
+  entryDate.addEventListener('keydown', e => e.preventDefault());
+  entryDate.addEventListener('keypress', e => e.preventDefault());
+  entryDate.addEventListener('paste', e => e.preventDefault());
+}
+// Custom date picker popup
+const datePickerToggle = document.getElementById('datePickerToggle');
+let datePickerPopup = null;
+
+function createDatePicker(){
+  if(datePickerPopup) return;
+  datePickerPopup = document.createElement('div');
+  datePickerPopup.className = 'date-picker-popup';
+  datePickerPopup.innerHTML = `
+    <div class="row">
+      <select id="dpYear"></select>
+      <select id="dpMonth"></select>
+    </div>
+    <div class="row">
+      <select id="dpDay"></select>
+    </div>
+    <div class="actions">
+      <button class="cancel" id="dpCancel">Cancelar</button>
+      <button class="apply" id="dpApply">Aplicar</button>
+    </div>
+  `;
+  document.body.appendChild(datePickerPopup);
+
+  // populate selects
+  const dpYear = datePickerPopup.querySelector('#dpYear');
+  const dpMonth = datePickerPopup.querySelector('#dpMonth');
+  const dpDay = datePickerPopup.querySelector('#dpDay');
+
+  const currentYear = new Date().getFullYear();
+  const startYear = currentYear - 50;
+  const endYear = currentYear + 10;
+  let yopts = '';
+  for(let y = endYear; y >= startYear; y--){ yopts += `<option value="${y}">${y}</option>` }
+  dpYear.innerHTML = yopts;
+
+  const months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+  dpMonth.innerHTML = months.map(m=>`<option value="${m}">${m}</option>`).join('');
+
+  function updateDays(){
+    const y = Number(dpYear.value);
+    const m = Number(dpMonth.value);
+    const maxDay = new Date(y, m, 0).getDate();
+    dpDay.innerHTML = Array.from({length:maxDay},(_,i)=>`<option value="${String(i+1).padStart(2,'0')}">${i+1}</option>`).join('');
+  }
+
+  dpYear.addEventListener('change', updateDays);
+  dpMonth.addEventListener('change', updateDays);
+  updateDays();
+
+  // actions
+  datePickerPopup.querySelector('#dpCancel').addEventListener('click', hideDatePicker);
+  datePickerPopup.querySelector('#dpApply').addEventListener('click', ()=>{
+    const y = datePickerPopup.querySelector('#dpYear').value;
+    const m = datePickerPopup.querySelector('#dpMonth').value;
+    const d = datePickerPopup.querySelector('#dpDay').value;
+    entryDate.value = `${y}-${m}-${d}`;
+    hideDatePicker();
+  });
+}
+
+function showDatePicker(){
+  createDatePicker();
+  // position near the toggle button
+  const rect = datePickerToggle.getBoundingClientRect();
+  datePickerPopup.style.left = `${rect.left}px`;
+  datePickerPopup.style.top = `${rect.bottom + 8 + window.scrollY}px`;
+  // prefill with current input value
+  const val = entryDate.value || new Date().toISOString().slice(0,10);
+  const parts = val.split('-');
+  const ysel = datePickerPopup.querySelector('#dpYear');
+  const msel = datePickerPopup.querySelector('#dpMonth');
+  const dsel = datePickerPopup.querySelector('#dpDay');
+  if(ysel) ysel.value = parts[0];
+  if(msel) msel.value = parts[1];
+  // update days then set day
+  const ev = new Event('change');
+  if(ysel) ysel.dispatchEvent(ev);
+  if(msel) msel.dispatchEvent(ev);
+  if(dsel) dsel.value = parts[2];
+  datePickerPopup.style.display = 'block';
+  setTimeout(()=> document.addEventListener('click', outsideClickHandler), 0);
+}
+
+function hideDatePicker(){
+  if(!datePickerPopup) return;
+  datePickerPopup.style.display = 'none';
+  document.removeEventListener('click', outsideClickHandler);
+}
+
+function outsideClickHandler(e){
+  if(!datePickerPopup) return;
+  if(datePickerPopup.contains(e.target) || datePickerToggle.contains(e.target)) return;
+  hideDatePicker();
+}
+
+if(datePickerToggle){
+  datePickerToggle.addEventListener('click', (ev)=>{ ev.stopPropagation(); showDatePicker(); });
+}
+const entryText = document.getElementById('entryText');
+const saveBtn = document.getElementById('saveEntry');
+const clearBtn = document.getElementById('clearForm');
+const entriesDiv = document.getElementById('entries');
+const template = document.getElementById('entryTemplate');
+const toggleThemeBtn = document.getElementById('toggleTheme');
+// filtros
+const filterYear = document.getElementById('filterYear');
+const filterMonth = document.getElementById('filterMonth');
+const filterDay = document.getElementById('filterDay');
+const clearFiltersBtn = document.getElementById('clearFilters');
+
+let entries = []; // {id, date, text}
+
+// Inicializar fecha por defecto a hoy
+entryDate.value = new Date().toISOString().slice(0,10);
+
+// Cargar entradas desde storage
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    entries = raw ? JSON.parse(raw) : [];
+  }catch(e){
+    console.error('Error cargando storage', e);
+    entries = [];
+  }
+}
+
+function saveToStorage(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+function render(){
+  entriesDiv.innerHTML = '';
+  // aplicar filtros
+  const fy = filterYear ? filterYear.value : 'all';
+  const fm = filterMonth ? filterMonth.value : 'all';
+  const fd = filterDay ? filterDay.value : 'all';
+
+  let filtered = entries.filter(e => {
+    if(!e.date) return false;
+    const parts = e.date.split('-');
+    const y = parts[0];
+    const m = parts[1];
+    const d = parts[2];
+    if(fy !== 'all' && y !== fy) return false;
+    if(fm !== 'all' && m !== fm) return false;
+    if(fd !== 'all' && d !== fd) return false;
+    return true;
+  });
+
+  if(filtered.length === 0){
+    entriesDiv.innerHTML = '<p style="color:var(--muted)">No hay entradas que coincidan con el filtro.</p>';
+    return;
+  }
+
+  // Mostrar las entradas más recientes primero
+  filtered.slice().reverse().forEach(e => {
+    const node = template.content.cloneNode(true);
+    node.querySelector('.entry-date').textContent = e.date;
+    node.querySelector('.entry-text').textContent = e.text;
+    const art = node.querySelector('.entry');
+    art.dataset.id = e.id;
+    // acciones
+    node.querySelector('.edit').addEventListener('click', () => startEdit(e.id));
+    node.querySelector('.delete').addEventListener('click', () => removeEntry(e.id));
+    entriesDiv.appendChild(node);
+  });
+}
+
+function uid(){
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+}
+
+function addOrUpdate(){
+  const date = entryDate.value;
+  const text = entryText.value.trim();
+  // Validar que el día exista en el mes seleccionado
+  if(date){
+    const parts = date.split('-');
+    if(parts.length === 3){
+      const y = Number(parts[0]);
+      const m = Number(parts[1]);
+      const d = Number(parts[2]);
+      const maxDay = new Date(y, m, 0).getDate();
+      if(d < 1 || d > maxDay){
+        alert(`Ese mes tiene menos días. Elige uno entre 1 y ${maxDay}`);
+        return;
+      }
+    }
+  }
+  if(!date || !text){
+    alert('Completa la fecha y el texto antes de guardar.');
+    return;
+  }
+  const existing = entries.find(e => e.id === saveBtn.dataset.editId);
+  if(existing){
+    existing.date = date;
+    existing.text = text;
+    delete saveBtn.dataset.editId;
+  }else{
+    entries.push({id: uid(), date, text});
+  }
+  saveToStorage();
+  populateFilters();
+  render();
+  clearForm();
+}
+
+function clearForm(){
+  entryText.value = '';
+  entryDate.value = new Date().toISOString().slice(0,10);
+  delete saveBtn.dataset.editId;
+}
+
+function startEdit(id){
+  const e = entries.find(x => x.id === id);
+  if(!e) return;
+  entryDate.value = e.date;
+  entryText.value = e.text;
+  saveBtn.dataset.editId = id;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function removeEntry(id){
+  if(!confirm('¿Borrar esta entrada?')) return;
+  entries = entries.filter(e => e.id !== id);
+  saveToStorage();
+  populateFilters();
+  render();
+}
+
+// Theme
+function loadTheme(){
+  const lbl = toggleThemeBtn && toggleThemeBtn.querySelector('.label');
+  if(localStorage.getItem('miDiarioTheme') === 'dark' || window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    document.documentElement.classList.add('dark');
+    if(lbl) lbl.textContent = 'Modo claro';
+    toggleThemeBtn.setAttribute('aria-pressed','true');
+  }
+}
+function toggleTheme(){
+  const isDark = document.documentElement.classList.toggle('dark');
+  const lbl = toggleThemeBtn && toggleThemeBtn.querySelector('.label');
+  if(lbl) lbl.textContent = isDark ? 'Modo claro' : 'Modo oscuro';
+  toggleThemeBtn.setAttribute('aria-pressed', String(isDark));
+  localStorage.setItem('miDiarioTheme', isDark ? 'dark' : 'light');
+}
+
+// POBLAR FILTROS
+function populateFilters(){
+  if(!filterYear || !filterMonth || !filterDay) return;
+  // años únicos presentes en las entradas
+  const years = Array.from(new Set(entries.map(e => e.date ? e.date.split('-')[0] : ''))).filter(Boolean).sort();
+  let yearOptions = '<option value="all">Año (Todos)</option>' + years.map(y => `<option value="${y}">${y}</option>`).join('');
+  filterYear.innerHTML = yearOptions;
+
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  let monthOptions = '<option value="all">Mes (Todos)</option>' + months.map((m,i) => {
+    const val = String(i+1).padStart(2,'0');
+    return `<option value="${val}">${m}</option>`;
+  }).join('');
+  filterMonth.innerHTML = monthOptions;
+
+  let dayOptions = '<option value="all">Día (Todos)</option>' + Array.from({length:31},(_,i)=>`<option value="${String(i+1).padStart(2,'0')}">${i+1}</option>`).join('');
+  filterDay.innerHTML = dayOptions;
+}
+
+function clearFilters(){
+  if(filterYear) filterYear.value = 'all';
+  if(filterMonth) filterMonth.value = 'all';
+  if(filterDay) filterDay.value = 'all';
+  render();
+}
+
+// Event listeners
+saveBtn.addEventListener('click', addOrUpdate);
+clearBtn.addEventListener('click', clearForm);
+toggleThemeBtn.addEventListener('click', toggleTheme);
+if(filterYear) filterYear.addEventListener('change', render);
+if(filterMonth) filterMonth.addEventListener('change', render);
+if(filterDay) filterDay.addEventListener('change', render);
+if(clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
+
+// Init
+loadTheme();
+load();
+populateFilters();
+render();
+  </script>
+</body>
+</html>

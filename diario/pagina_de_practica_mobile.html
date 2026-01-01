@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>pagina de practica Luciano</title>
+  <style>
+:root{
+  --bg:#f6f7f9;
+  --panel:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --accent:#2563eb;
+  --radius:10px;
+  --max-w:900px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial}
+body{
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  padding:12px;
+}
+
+.container{max-width:var(--max-w);width:100%}
+
+/* Layout */
+header{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-bottom:18px;position:relative;padding:8px 0}
+header h1{margin:0;font-size:1.2rem}
+
+/* Controls inside header positioned top-left fixed */
+.controls{
+  position:fixed;
+  left:8px;
+  top:8px;
+  transform:none;
+  z-index:9999;
+}
+.controls button{
+  padding:8px 10px;
+  border-radius:10px;
+  border:0;
+  background:var(--panel);
+  cursor:pointer;
+  box-shadow:0 8px 26px rgba(2,6,23,0.12);
+  color:var(--text);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  font-size:0.95rem;
+  position:relative;
+  transition:transform .12s ease, box-shadow .12s ease, background .12s;
+}
+.controls button:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(2,6,23,0.18)}
+.controls button svg{width:18px;height:18px;flex:0 0 18px;display:block;fill:currentColor}
+.controls button[aria-pressed="true"]{background:var(--accent);color:#fff}
+
+/* Animated crossfade and transform between sun and moon */
+.controls button .icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);transition:opacity .28s ease,transform .28s ease;display:inline-flex}
+.controls button .label{padding-left:0;}
+.controls button{padding-left:36px}
+.controls button .icon.sun{opacity:1;transform:translateY(-50%) rotate(0) scale(1)}
+.controls button .icon.moon{opacity:0;transform:translateY(-40%) scale(.8) rotate(-10deg)}
+.dark .controls button .icon.sun{opacity:0;transform:translateY(-60%) rotate(-20deg) scale(.7)}
+.dark .controls button .icon.moon{opacity:1;transform:translateY(-50%) scale(1) rotate(0)}
+
+/* Hide the label on very small screens to keep a compact icon-only control */
+@media (max-width:420px){
+  .controls button .label{display:none}
+}
+
+/* Mobile: move controls to bottom-right for comfort */
+@media (max-width:640px){
+  .controls{
+    bottom:16px;
+    right:16px;
+    top:auto;
+    left:auto;
+  }
+}
+
+main{width:100%;max-width:var(--max-w)}
+.entry-form{background:var(--panel);padding:14px;border-radius:var(--radius);box-shadow:0 6px 20px rgba(2,6,23,0.06);margin-bottom:14px}
+.entry-form input[type="date"], .entry-form textarea{
+  width:100%;padding:10px;border-radius:8px;border:1px solid rgba(15,23,42,0.06);margin-bottom:8px;font-size:0.95rem;background:transparent;color:inherit;
+}
+
+/* Style date input to look like the action buttons (compact) */
+.entry-form input[type="date"]{
+  max-width:220px;
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:8px;
+  border:0;
+  background:var(--panel);
+  box-shadow:0 4px 12px rgba(2,6,23,0.04);
+  color:var(--text);
+  cursor:pointer;
+}
+/* Remove native appearance (may vary by browser) */
+.entry-form input[type="date"]::-webkit-inner-spin-button,
+.entry-form input[type="date"]::-webkit-calendar-picker-indicator{
+  cursor:pointer;
+}
+.form-actions{display:flex;gap:8px;flex-wrap:wrap}
+.form-actions button{padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#fff;cursor:pointer;font-weight:600}
+.form-actions button#clearForm{background:#ef4444}
+
+/* Entries */
+.entries-list .entry{background:var(--panel);padding:12px;border-radius:8px;margin-bottom:10px;box-shadow:0 4px 12px rgba(2,6,23,0.04)}
+.entry header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.entry .entry-date{font-weight:700}
+.entry .entry-text{white-space:pre-wrap;color:var(--text);margin:0;word-break:break-word}
+
+/* Botones de acción dentro de cada entrada */
+.entry .entry-actions button{
+  padding:6px 10px;
+  border-radius:6px;
+  border:0;
+  cursor:pointer;
+  font-size:0.85rem;
+  margin-left:4px;
+  font-weight:600;
+}
+.entry .entry-actions .edit{
+  background:#10b981;
+  color:#fff;
+}
+.entry .entry-actions .delete{
+  background:#ef4444;
+  color:#fff;
+}
+.entry .entry-actions button:hover{
+  filter:brightness(.95);
+  transform:translateY(-2px);
+  transition:transform .12s, filter .12s;
+}
+
+/* Mobile optimizations */
+@media (max-width:640px){
+  body{padding:8px}
+  header h1{font-size:1rem}
+  .entry-form{padding:12px}
+  .entry-form textarea{font-size:1rem}
+  .form-actions{gap:6px}
+  .form-actions button{padding:8px 10px;font-size:0.9rem}
+  .entry{padding:10px}
+  .entry .entry-actions{display:flex;gap:4px;flex-wrap:wrap}
+  .entry .entry-actions button{margin-left:0;padding:6px 8px}
+  .entries-list h2{font-size:1.2rem;margin:8px 0}
+}
+
+@media (max-width:420px){
+  .controls{top:6px;left:6px}
+  .controls button{padding:6px 8px;font-size:0.85rem}
+  header h1{font-size:0.95rem}
+  .entry-form{padding:10px}
+  .entry-form input[type="date"]{max-width:100%;width:100%;margin-bottom:8px}
+  .form-actions button{padding:8px;font-size:0.85rem;flex:1}
+  .entry{padding:8px}
+  .entry header{flex-direction:column;align-items:flex-start}
+  .entry .entry-actions{width:100%;display:flex;gap:4px}
+  .entry .entry-actions button{flex:1;padding:6px;font-size:0.8rem}
+}
+
+/* Dark mode */
+:root.dark{
+  --bg:#0b1220;
+  --panel:#0f1724;
+  --text:#e6eef8;
+  --muted:#9aa7b8;
+  --accent:#4f46e5;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <h1></h1>
+    <div class="controls">
+      <button id="toggleTheme" aria-pressed="false" aria-label="Cambiar tema">
+        <!-- Sun icon (visible in light mode) -->
+        <span class="icon sun" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4V2m0 20v-2M4.22 4.22L2.81 2.81M21.19 21.19l-1.41-1.41M1 12H3m18 0h2M4.22 19.78l-1.41 1.41M18.36 5.64l1.41-1.41M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+          </svg>
+        </span>
+        <!-- Moon icon (visible in dark mode) -->
+        <span class="icon moon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+          </svg>
+        </span>
+        <span class="label">Modo oscuro</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="entry-form">
+      <input type="date" id="entryDate" />
+      <textarea id="entryText" rows="5" placeholder="Escribe lo que pasó hoy..."></textarea>
+      <div class="form-actions">
+        <button id="saveEntry">Guardar</button>
+        <button id="clearForm">Eliminar</button>
+      </div>
+    </section>
+
+    <section class="entries-list">
+      <h2>Entradas</h2>
+      <div id="entries"></div>
+    </section>
+  </main>
+
+  <template id="entryTemplate">
+    <article class="entry">
+      <header>
+        <time class="entry-date"></time>
+        <div class="entry-actions">
+          <button class="edit">Editar</button>
+          <button class="delete">Borrar</button>
+        </div>
+      </header>
+      <p class="entry-text"></p>
+    </article>
+  </template>
+
+  <script>
+// app.js - diario simple con localStorage
+const STORAGE_KEY = 'miDiarioEntradasV1';
+
+const entryDate = document.getElementById('entryDate');
+const entryText = document.getElementById('entryText');
+const saveBtn = document.getElementById('saveEntry');
+const clearBtn = document.getElementById('clearForm');
+const entriesDiv = document.getElementById('entries');
+const template = document.getElementById('entryTemplate');
+const toggleThemeBtn = document.getElementById('toggleTheme');
+
+let entries = []; // {id, date, text}
+
+// Inicializar fecha por defecto a hoy
+entryDate.value = new Date().toISOString().slice(0,10);
+
+// Cargar entradas desde storage
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    entries = raw ? JSON.parse(raw) : [];
+  }catch(e){
+    console.error('Error cargando storage', e);
+    entries = [];
+  }
+}
+
+function saveToStorage(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+function render(){
+  entriesDiv.innerHTML = '';
+  if(entries.length === 0){
+    entriesDiv.innerHTML = '<p style="color:var(--muted)">Aún no hay entradas.</p>';
+    return;
+  }
+  // Mostrar las entradas más recientes primero
+  entries.slice().reverse().forEach(e => {
+    const node = template.content.cloneNode(true);
+    node.querySelector('.entry-date').textContent = e.date;
+    node.querySelector('.entry-text').textContent = e.text;
+    const art = node.querySelector('.entry');
+    art.dataset.id = e.id;
+    // acciones
+    node.querySelector('.edit').addEventListener('click', () => startEdit(e.id));
+    node.querySelector('.delete').addEventListener('click', () => removeEntry(e.id));
+    entriesDiv.appendChild(node);
+  });
+}
+
+function uid(){
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+}
+
+function addOrUpdate(){
+  const date = entryDate.value;
+  const text = entryText.value.trim();
+  if(!date || !text){
+    alert('Completa la fecha y el texto antes de guardar.');
+    return;
+  }
+  const existing = entries.find(e => e.id === saveBtn.dataset.editId);
+  if(existing){
+    existing.date = date;
+    existing.text = text;
+    delete saveBtn.dataset.editId;
+  }else{
+    entries.push({id: uid(), date, text});
+  }
+  saveToStorage();
+  render();
+  clearForm();
+}
+
+function clearForm(){
+  entryText.value = '';
+  entryDate.value = new Date().toISOString().slice(0,10);
+  delete saveBtn.dataset.editId;
+}
+
+function startEdit(id){
+  const e = entries.find(x => x.id === id);
+  if(!e) return;
+  entryDate.value = e.date;
+  entryText.value = e.text;
+  saveBtn.dataset.editId = id;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function removeEntry(id){
+  if(!confirm('¿Borrar esta entrada?')) return;
+  entries = entries.filter(e => e.id !== id);
+  saveToStorage();
+  render();
+}
+
+// Theme
+function loadTheme(){
+  if(localStorage.getItem('miDiarioTheme') === 'dark' || window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    document.documentElement.classList.add('dark');
+    const lbl = toggleThemeBtn.querySelector('.label');
+    if(lbl) lbl.textContent = 'Modo claro';
+    toggleThemeBtn.setAttribute('aria-pressed','true');
+  }
+}
+function toggleTheme(){
+  const isDark = document.documentElement.classList.toggle('dark');
+  const lbl = toggleThemeBtn.querySelector('.label');
+  if(lbl) lbl.textContent = isDark ? 'Modo claro' : 'Modo oscuro';
+  toggleThemeBtn.setAttribute('aria-pressed', String(isDark));
+  localStorage.setItem('miDiarioTheme', isDark ? 'dark' : 'light');
+}
+
+// Event listeners
+saveBtn.addEventListener('click', addOrUpdate);
+clearBtn.addEventListener('click', clearForm);
+toggleThemeBtn.addEventListener('click', toggleTheme);
+
+// Init
+loadTheme();
+load();
+render();
+  </script>
+</body>
+</html>

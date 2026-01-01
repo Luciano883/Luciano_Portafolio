@@ -1,0 +1,145 @@
+:root{
+  --bg:#f6f7f9;
+  --panel:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --accent:#2563eb;
+  --radius:10px;
+  --max-w:900px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial}
+body{
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  padding:24px;
+}
+
+.container{max-width:var(--max-w);width:100%}
+
+/* Layout */
+header{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-bottom:18px;position:relative}
+header h1{margin:0;font-size:1.4rem}
+
+/* Controls inside header positioned to the right */
+.controls{
+  position:fixed; /* fixed to viewport corner */
+  left:8px;      /* top-left corner */
+  top:8px;
+  transform:none;
+  z-index:9999;
+}
+.controls button{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  font-size:0.95rem;
+  position:relative; /* needed for icon overlay animation */
+  box-shadow:0 8px 26px rgba(2,6,23,0.12);
+  color:var(--text);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  font-size:0.95rem;
+  transition:transform .12s ease, box-shadow .12s ease, background .12s;
+}
+
+/* Animated crossfade and transform between sun and moon */
+.controls button .icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);transition:opacity .28s ease,transform .28s ease;display:inline-flex}
+.controls button .label{padding-left:0;}
+.controls button{padding-left:36px}
+.controls button .icon.sun{opacity:1;transform:translateY(-50%) rotate(0) scale(1)}
+.controls button .icon.moon{opacity:0;transform:translateY(-40%) scale(.8) rotate(-10deg)}
+.dark .controls button .icon.sun{opacity:0;transform:translateY(-60%) rotate(-20deg) scale(.7)}
+.dark .controls button .icon.moon{opacity:1;transform:translateY(-50%) scale(1) rotate(0)}
+.controls button:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(2,6,23,0.18)}
+.controls button svg{width:18px;height:18px;flex:0 0 18px;display:block;fill:currentColor}
+.controls button[aria-pressed="true"]{background:var(--accent);color:#fff}
+
+/* show sun in light, moon in dark */
+.controls button .icon.moon{display:none}
+.controls button .icon.sun{display:inline-block}
+.dark .controls button .icon.sun{display:none}
+.dark .controls button .icon.moon{display:inline-block}
+
+/* Hide the label on very small screens to keep a compact icon-only control */
+@media (max-width:420px){
+  .controls button .label{display:none}
+}
+
+main{width:100%;max-width:var(--max-w)}
+.entry-form{background:var(--panel);padding:14px;border-radius:var(--radius);box-shadow:0 6px 20px rgba(2,6,23,0.06);margin-bottom:14px}
+.entry-form input[type="date"], .entry-form textarea{
+  width:100%;padding:10px;border-radius:8px;border:1px solid rgba(15,23,42,0.06);margin-bottom:8px;font-size:0.95rem;background:transparent;color:inherit;
+}
+
+/* Style date input to look like the action buttons (compact) */
+.entry-form input[type="date"]{
+  max-width:220px;
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:8px;
+  border:0;
+  background:var(--panel);
+  box-shadow:0 4px 12px rgba(2,6,23,0.04);
+  color:var(--text);
+  cursor:pointer;
+}
+/* Remove native appearance (may vary by browser) */
+.entry-form input[type="date"]::-webkit-inner-spin-button,
+.entry-form input[type="date"]::-webkit-calendar-picker-indicator{
+  cursor:pointer;
+}
+.form-actions{display:flex;gap:8px}
+.form-actions button{padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+.form-actions button#clearForm{background:#ef4444}
+
+/* (old .theme-toggle-fixed removed) */
+
+/* Entries */
+.entries-list .entry{background:var(--panel);padding:12px;border-radius:8px;margin-bottom:10px;box-shadow:0 4px 12px rgba(2,6,23,0.04)}
+.entry header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.entry .entry-date{font-weight:700}
+.entry .entry-text{white-space:pre-wrap;color:var(--text);margin:0}
+
+/* Botones de acción dentro de cada entrada */
+.entry .entry-actions button{
+  padding:6px 10px;
+  border-radius:6px;
+  border:0;
+  cursor:pointer;
+  font-size:0.9rem;
+  margin-left:6px;
+}
+.entry .entry-actions .edit{
+  background:#10b981; /* verde */
+  color:#fff;
+}
+.entry .entry-actions .delete{
+  background:#ef4444; /* rojo */
+  color:#fff;
+}
+.entry .entry-actions button:hover{
+  filter:brightness(.95);
+  transform:translateY(-2px);
+  transition:transform .12s, filter .12s;
+}
+
+/* small screens */
+@media (max-width:640px){
+  body{padding:12px}
+}
+
+/* Dark mode */
+:root.dark{
+  --bg:#0b1220;
+  --panel:#0f1724;
+  --text:#e6eef8;
+  --muted:#9aa7b8;
+  --accent:#4f46e5;
+}

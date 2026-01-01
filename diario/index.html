@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Diario de Luciano</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1></h1>
+    <div class="controls">
+      <button id="toggleTheme" aria-pressed="false" aria-label="Cambiar tema">
+        <!-- Sun icon (visible in light mode) -->
+        <span class="icon sun" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4V2m0 20v-2M4.22 4.22L2.81 2.81M21.19 21.19l-1.41-1.41M1 12H3m18 0h2M4.22 19.78l-1.41 1.41M18.36 5.64l1.41-1.41M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+          </svg>
+        </span>
+        <!-- Moon icon (visible in dark mode) -->
+        <span class="icon moon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+          </svg>
+        </span>
+        <span class="label">Modo oscuro</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="entry-form">
+      <input type="date" id="entryDate" />
+      <textarea id="entryText" rows="6" placeholder="Escribe lo que pasó hoy..."></textarea>
+      <div class="form-actions">
+        <button id="saveEntry">Guardar</button>
+        <button id="clearForm">Eliminar</button>
+      </div>
+    </section>
+
+    <section class="entries-list">
+      <h2>Mi Diario:</h2>
+      <div id="entries"></div>
+    </section>
+  </main>
+
+  <template id="entryTemplate">
+    <article class="entry">
+      <header>
+        <time class="entry-date"></time>
+        <div class="entry-actions">
+          <button class="edit">Editar</button>
+          <button class="delete">Borrar</button>
+        </div>
+      </header>
+      <p class="entry-text"></p>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
